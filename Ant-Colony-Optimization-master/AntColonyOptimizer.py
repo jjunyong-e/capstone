@@ -225,11 +225,12 @@ class AntColonyOptimizer:
 
             if verbose: print("Best score at iteration {}: {}; overall: {} ({}s)"
                             "".format(i, round(best_score, 2), round(best_score_so_far, 2),
-                                        round(time.time() - start_iter)))
+                                        round(time.time() - start_iter))); print(best_path)
 
             if best_score == best_score_so_far and num_equal == early_stopping_count:
                 self.stopped_early = True
                 print("Stopping early due to {} iterations of the same score.".format(early_stopping_count))
+                print(best_path)
                 break
 
         self.fit_time = round(time.time() - start)
@@ -239,6 +240,7 @@ class AntColonyOptimizer:
             self.best = self.best_series[np.argmin(self.best_series)]
             if verbose: print(
                 "ACO fitted.  Runtime: {} minutes.  Best score: {}".format(self.fit_time // 60, self.best))
+                
             return self.best
         elif mode == 'max':
             self.best = self.best_series[np.argmax(self.best_series)]
@@ -247,7 +249,7 @@ class AntColonyOptimizer:
             return self.best
         else:
             raise ValueError("Invalid mode!  Choose 'min' or 'max'.")
-
+    
     def plot(self):
         """
         Plots the score over time after the model has been fitted.
@@ -271,7 +273,5 @@ class AntColonyOptimizer:
             plt.title("Ant Colony Optimization Results (best: {})".format(np.round(self.best, 2)))
             plt.show()
 
-
-import AntColonyOptimizer as aco
 
 
